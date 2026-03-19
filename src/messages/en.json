@@ -1,0 +1,94 @@
+{
+	"common": {
+		"appName": "Gacharoo",
+		"loading": "Loading...",
+		"error": "Something went wrong",
+		"back": "Back",
+		"next": "Next",
+		"save": "Save",
+		"cancel": "Cancel",
+		"confirm": "Confirm",
+		"delete": "Delete",
+		"share": "Share",
+		"settings": "Settings"
+	},
+	"auth": {
+		"signIn": "Sign In",
+		"signUp": "Sign Up",
+		"signOut": "Sign Out",
+		"email": "Email",
+		"password": "Password",
+		"magicLink": "Send Magic Link",
+		"ageGate": "Date of Birth",
+		"ageGateInfo": "You must be at least 16 years old to use Gacharoo.",
+		"continueWithGoogle": "Continue with Google"
+	},
+	"packs": {
+		"openPack": "Open Pack",
+		"packsAvailable": "{count, plural, =0 {No packs} one {1 pack} other {# packs}} available",
+		"nextPackIn": "Next pack in {time}",
+		"openedToday": "Packs opened today: {count}",
+		"sessionTime": "Session: {minutes}m",
+		"dropRates": "Drop rates: {common}% Common | {uncommon}% Uncommon | {rare}% Rare | {epic}% Epic | {legendary}% Legendary",
+		"adPrompt": "Watch a short ad to get an extra pack.",
+		"adConsent": "Ads are served by Google AdMob. They help keep Gacharoo free.",
+		"enableAds": "Enable ads",
+		"noThanks": "No thanks, I'll wait",
+		"dailyLimitReached": "Daily ad limit reached. Come back tomorrow!",
+		"coolDown": "You've opened {count} packs. Want to keep going or check your collection?",
+		"keepOpening": "Keep opening",
+		"viewCollection": "View collection"
+	},
+	"collection": {
+		"title": "Collection",
+		"completion": "{percent}% complete",
+		"owned": "Owned",
+		"missing": "Missing",
+		"duplicates": "Duplicates",
+		"filter": "Filter",
+		"allCards": "All Cards",
+		"holographic": "Holographic"
+	},
+	"trading": {
+		"title": "Trading",
+		"propose": "Propose Trade",
+		"accept": "Accept",
+		"decline": "Decline",
+		"fairness": "Trade fairness",
+		"wishlist": "Wishlist",
+		"duplicatesAvailable": "Duplicates available for trade"
+	},
+	"battle": {
+		"title": "Battle Run",
+		"startRun": "Start Run",
+		"pickTeam": "Pick your team",
+		"hearts": "{count} hearts",
+		"trophies": "{count} trophies",
+		"regroup": "Choose one",
+		"heal": "Heal",
+		"buff": "Buff",
+		"swap": "Swap",
+		"runOver": "Run over! Score: {score} trophies",
+		"continueAd": "Watch an ad to revive with 1 heart?",
+		"leaderboard": "Leaderboard",
+		"beatTheGroup": "Beat the Group"
+	},
+	"import": {
+		"title": "Create Set",
+		"nameYourCrew": "Who's in your set?",
+		"chooseLook": "Choose a look",
+		"superlatives": "Superlatives",
+		"sealSet": "Seal this set?",
+		"setForged": "Your set is forged!",
+		"photoConsent": "Make sure this person is okay with being in your card set. Photos can be removed at any time by request."
+	},
+	"rarity": {
+		"standard": "Standard",
+		"common": "Common",
+		"uncommon": "Uncommon",
+		"rare": "Rare",
+		"epic": "Epic",
+		"legendary": "Legendary",
+		"holographic": "Holographic"
+	}
+}

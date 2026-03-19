@@ -1,0 +1,15 @@
+# Development: use localhost, no HTTPS
+# Production: replace with your domain names
+
+:80 {
+	reverse_proxy localhost:3000
+}
+
+# Uncomment for production with real domain:
+# gacharoo.yourdomain.com {
+#     reverse_proxy app:3000
+# }
+#
+# analytics.yourdomain.com {
+#     reverse_proxy umami:3000
+# }
