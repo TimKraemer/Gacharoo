@@ -1,0 +1,145 @@
+---
+description: Gacharoo project conventions, architecture, coding standards, and commit messages. Always active for all files in this project.
+globs:
+alwaysApply: true
+---
+
+# Gacharoo Project Rules
+
+## Project Identity
+
+Gacharoo: turn anything into a fully playable, tradeable, collectible card game with 3D holographic effects. Open source (AGPL), self-hostable, ad-funded with user opt-in.
+
+Plan document: `~/.cursor/plans/trading_cards_platform_f3ea399a.plan.md` -- read this for full game design, economy rules, and architecture decisions.
+
+## Tech Stack
+
+- **Runtime**: Bun (not Node.js, not npm, not pnpm)
+- **Framework**: Next.js 15 App Router, `output: 'standalone'`
+- **Styling**: Tailwind CSS + shadcn/ui. Prefer Tailwind classes over CSS modules or inline styles.
+- **3D**: React Three Fiber + @react-three/drei
+- **Database**: PostgreSQL 16 + Drizzle ORM
+- **Auth**: better-auth (runs inside Next.js, not a separate service)
+- **State**: Zustand (selectors, never entire store)
+- **i18n**: next-intl (all UI strings via translation keys, never hardcode user-facing text)
+- **Linting/Formatting**: Biome (not ESLint, not Prettier). Run `bun run lint` and `bun run format`.
+- **Testing**: `bun test`
+
+## Architecture: Bulletproof React (Feature-Based)
+
+Code is organized by feature domain in `/src/features/`. Each feature is self-contained.
+
+### Feature Structure
+
+```
+src/features/{feature-name}/
+  components/    # Feature-scoped React components
+  hooks/         # Feature-scoped hooks
+  api/           # Server actions and API helpers
+  utils/         # Feature-scoped utilities
+  types.ts       # Feature types
+```
+
+### Rules
+
+- **No cross-feature imports.** Features never import from other features. Compose at the app level in `/src/app/` pages.
+- **No barrel files.** Import directly from the source file, not through `index.ts`.
+- **Server Components by default.** Only add `'use client'` when the component needs interactivity, state, or browser APIs.
+- **Co-locate data fetching.** Each component fetches its own data. Use React `cache()` for deduplication with Drizzle queries.
+- **Shared code** goes in `/src/components/`, `/src/hooks/`, `/src/lib/`, `/src/utils/` ONLY if used by 2+ features.
+
+### Features
+
+`cards`, `packs`, `collection`, `trading`, `battle`, `import`, `social`, `ads`
+
+## Coding Standards
+
+### General
+
+- Functional React only. No class components.
+- Prefer `for...of` over `.forEach()` in JavaScript/TypeScript.
+- Prefer early returns over deeply nested conditionals.
+- Extract reusable logic into hooks. Extract reusable UI into components.
+- No code duplication. If you write the same logic twice, extract it.
+- TypeScript strict mode. No `any` unless absolutely necessary (and comment why).
+- Prefer `const` over `let`. Never use `var`.
+- Use `nanoid` for user-facing IDs (invite codes, share links). Use UUID for internal database IDs.
+
+### Naming
+
+- Files: `kebab-case.ts`, `kebab-case.tsx`
+- Components: `PascalCase` (file name matches: `card-renderer.tsx` exports `CardRenderer`)
+- Hooks: `camelCase` starting with `use` (file: `use-pack-timer.ts`)
+- Utils: `camelCase` (file: `calculate-rarity.ts`)
+- Types: `PascalCase` (e.g., `CardTemplate`, `PackResult`)
+- Database tables: `snake_case` (e.g., `card_templates`, `user_cards`)
+- API routes: `kebab-case` paths (e.g., `/api/packs/open`)
+
+### Components
+
+- Keep components small and focused. If a component exceeds ~150 lines, split it.
+- Props interfaces named `{ComponentName}Props`.
+- Destructure props in the function signature.
+- Use `React.forwardRef` for components that need ref forwarding.
+- Prefer composition over configuration (render props, children) over mega-components with 20 props.
+
+### Performance
+
+- Memoize expensive computations with `useMemo`.
+- Memoize callbacks passed to children with `useCallback`.
+- Use `React.memo` for components that re-render with the same props.
+- Never create objects/arrays inline in JSX (they create new references every render).
+- Images: use Next.js `<Image>` with explicit width/height. Use `sharp` for server-side processing.
+- Three.js: Never `setState` in `useFrame`. Mutate refs directly. See R3F skill.
+
+### Accessibility (from day 1)
+
+- All interactive elements have ARIA labels.
+- Rarity is communicated by SYMBOL + COLOR (double-coding), never color alone.
+- Support `prefers-reduced-motion`: detect via CSS media query, provide simplified animations.
+- Keyboard navigable: all clickable elements are focusable with visible focus rings.
+- Contrast ratio: minimum 4.5:1 for text (WCAG 2.1 AA).
+
+### i18n (from day 1)
+
+- All user-facing strings go through `next-intl` translation keys.
+- Never hardcode text in components. Use `useTranslations('namespace')`.
+- Date/number formatting via `next-intl` formatters (auto-respects locale).
+- Translation files in `/src/messages/{locale}.json`.
+
+## Environment Variables
+
+- `DATABASE_URL` -- PostgreSQL connection string
+- `BETTER_AUTH_SECRET` -- Auth signing secret
+- `BETTER_AUTH_URL` -- Public auth URL
+- `NEXT_PUBLIC_UMAMI_URL` -- Umami script URL
+- `NEXT_PUBLIC_UMAMI_WEBSITE_ID` -- Umami website ID
+- `ENABLE_ADS` -- `"true"` to enable ad SDK loading (default: absent/false)
+- `APPLIXIR_ZONE_ID` -- AppLixir zone ID (web ads, only used when ENABLE_ADS=true)
+
+## Commit Messages
+
+All commits use Conventional Commits format. The AI generates these; the human reviews code, not messages.
+
+```
+type(scope): concise description in imperative mood
+```
+
+**Types:** `feat`, `fix`, `refactor`, `style`, `docs`, `test`, `chore`, `perf`
+
+**Scopes:** `cards`, `packs`, `battle`, `trading`, `import`, `collection`, `social`, `ads`, `auth`, `db`, `infra`, `a11y`, `i18n`
+
+**Rules:**
+- Subject max 72 characters, imperative mood, no trailing period
+- Body (optional): explains WHY, not WHAT
+- Keep commits atomic: one logical change per commit
+- Prefer many small commits over one giant commit
+
+## Design Rules (Game-Specific)
+
+- **No near-miss teasing.** Never show "Almost a Legendary!" when pulling Epic. Celebrate what WAS pulled.
+- **Probabilities always visible.** Drop rates shown ON every pack before opening.
+- **Ads are opt-in.** Zero ad SDK loaded until user explicitly consents. `ENABLE_ADS` env var controls build inclusion.
+- **Holo = cosmetic only.** Holographic variants never give gameplay advantages.
+- **Pack RNG is server-side.** Never run randomization client-side. All pack opens are API route calls.
+- **Bot players are clearly marked.** Never pretend bots are human players.

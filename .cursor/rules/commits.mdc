@@ -1,0 +1,108 @@
+---
+description: Commit message format and git workflow rules. Apply when creating commits, staging changes, or writing commit messages. This project uses AI-generated commit messages reviewed by a human.
+globs:
+alwaysApply: false
+---
+
+# Git Commit Rules for Gacharoo
+
+## Format
+
+Every commit message follows Conventional Commits:
+
+```
+type(scope): concise description in imperative mood
+```
+
+Optional body (separated by blank line):
+```
+type(scope): concise description
+
+Why this change was made. Not what -- the diff shows what.
+```
+
+## Type (required)
+
+- `feat` -- New feature or capability
+- `fix` -- Bug fix
+- `refactor` -- Code change that neither fixes a bug nor adds a feature
+- `perf` -- Performance improvement
+- `style` -- Formatting, missing semicolons, etc (no code logic change)
+- `docs` -- Documentation only
+- `test` -- Adding or updating tests
+- `chore` -- Build process, tooling, dependencies, CI
+- `a11y` -- Accessibility improvement
+- `i18n` -- Internationalization / translation
+
+## Scope (required)
+
+Use the feature domain:
+
+`cards` `packs` `battle` `trading` `import` `collection` `social` `ads` `auth` `db` `infra` `a11y` `i18n` `ui`
+
+Multiple scopes: use the primary one. If truly cross-cutting, omit scope: `refactor: extract shared card types`
+
+## Subject Line Rules
+
+- Max 72 characters
+- Imperative mood: "add" not "added", "fix" not "fixes"
+- Lowercase after the colon: `feat(cards): add holographic shader` not `Add Holographic Shader`
+- No trailing period
+- Be specific: `fix(packs): prevent duplicate card in same pack` not `fix(packs): fix bug`
+
+## Body Rules (optional, use for non-obvious changes)
+
+- Separated from subject by a blank line
+- Explains WHY, not WHAT
+- Wrap at 80 characters
+- Use bullet points with `-` for lists
+- Reference issue numbers: `Closes #42`
+
+## What Makes a Good vs Bad Commit Message
+
+Good:
+```
+feat(packs): implement server-side RNG with rarity weights
+
+- 60/20/20 pool split for normal/golden/trade-only cards
+- Soft pity halves drop weight after 3x duplicate pulls
+- Adaptive pack size based on set card count
+```
+
+```
+fix(cards): prevent near-miss teasing in rarity reveal UI
+```
+
+```
+perf(battle): pre-compute ghost snapshots on team save
+```
+
+```
+a11y(cards): add rarity symbols for colorblind double-coding
+```
+
+Bad:
+```
+Update files                          # too vague
+Fixed the thing                       # not informative
+feat: Added a new feature for cards   # past tense, no scope, redundant
+WIP                                   # never commit WIP
+feat(packs): This commit adds the ability to open packs with a new animation
+                                      # too long, not imperative
+```
+
+## Commit Granularity
+
+- One logical change per commit
+- Prefer many small commits over one giant commit
+- If a change touches multiple features, consider splitting into separate commits
+- Database migrations get their own commit: `chore(db): add user_wishlists table`
+- Dependency changes get their own commit: `chore: add react-spring and @react-three/drei`
+
+## Avoid
+
+- Never commit `.env` files, secrets, or API keys
+- Never commit `node_modules/`, `.next/`, `data/` directories
+- Never commit `bun.lockb` changes without corresponding `package.json` changes
+- Never use `--no-verify` to skip hooks
+- Never force push to main
