@@ -81,9 +81,7 @@ export const cardTemplates = pgTable("card_templates", {
 	stats: jsonb("stats").$type<CardStats>().notNull(),
 	rarity: rarityEnum("rarity").default("common").notNull(),
 	elementType: elementEnum("element_type"),
-	variantOf: uuid("variant_of").references(
-		(): ReturnType<typeof pgTable> => cardTemplates as ReturnType<typeof pgTable>,
-	),
+	variantOf: uuid("variant_of"),
 	superlative: text("superlative"),
 	pool: text("pool").default("normal").notNull(),
 	createdAt: timestamp("created_at").defaultNow().notNull(),

@@ -12,16 +12,16 @@ export default function HomePage() {
 				</p>
 				<div className="flex gap-4 justify-center pt-4">
 					<a
-						href="/sets"
+						href="/demo"
 						className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
 					>
-						Get Started
+						Try the Demo
 					</a>
 					<a
-						href="/about/monetization"
+						href="https://github.com/gacharoo"
 						className="inline-flex items-center justify-center rounded-lg border border-input px-6 py-3 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
 					>
-						How It Works
+						Open Source
 					</a>
 				</div>
 			</div>
