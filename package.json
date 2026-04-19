@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "next dev --turbopack",
-		"build": "next build",
+		"build": "GACHAROO_DATABASE_URL_FALLBACK=1 next build",
 		"start": "next start",
 		"lint": "biome check .",
 		"test": "bun test",

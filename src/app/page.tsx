@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { getTranslations } from "next-intl/server"
 import { GacharooLogoLockup } from "@/components/brand/gacharoo-logo-lockup"
 import { MarketingShell } from "@/components/layout/marketing-shell"
@@ -20,15 +21,17 @@ export default async function HomePage() {
 					<p className="text-lg text-muted-foreground md:text-xl">{tb("homeSubtitle")}</p>
 					<p className="text-sm text-muted-foreground/90">{tb("homeLayoutHint")}</p>
 					<div className="flex flex-wrap justify-center gap-4 pt-2">
-						<a
+						<Link
 							href="/demo"
 							className="inline-flex min-h-11 items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
 						>
 							{tb("tryDemo")}
-						</a>
+						</Link>
 						<a
 							href="https://github.com/gacharoo"
 							className="inline-flex min-h-11 items-center justify-center rounded-lg border border-input px-6 py-3 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+							rel="noopener noreferrer"
+							target="_blank"
 						>
 							{tb("openSource")}
 						</a>
