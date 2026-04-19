@@ -39,6 +39,7 @@ export default function DemoPage() {
 	const tBrand = useTranslations("brand")
 	const tCommon = useTranslations("common")
 	const tDemo = useTranslations("demo")
+	const tRarity = useTranslations("rarity")
 	const [mode, setMode] = useState<"card" | "pack">("pack")
 	const [selectedCard, setSelectedCard] = useState<CardData>(DEMO_CARDS[0])
 	const [packKey, setPackKey] = useState(0)
@@ -160,19 +161,19 @@ export default function DemoPage() {
 						</div>
 						<div className="grid grid-cols-2 gap-2 text-xs sm:grid-cols-4">
 							<div className="rounded-xl border border-zinc-700/80 bg-zinc-900/80 px-3 py-2">
-								<div className="text-zinc-500">Packs</div>
+								<div className="text-zinc-500">{tDemo("statPacks")}</div>
 								<div className="text-lg font-semibold text-emerald-300">{packsRemaining}</div>
 							</div>
 							<div className="rounded-xl border border-zinc-700/80 bg-zinc-900/80 px-3 py-2">
-								<div className="text-zinc-500">Coins</div>
+								<div className="text-zinc-500">{tDemo("statCoins")}</div>
 								<div className="text-lg font-semibold text-amber-300">{coins}</div>
 							</div>
 							<div className="rounded-xl border border-zinc-700/80 bg-zinc-900/80 px-3 py-2">
-								<div className="text-zinc-500">Opened</div>
+								<div className="text-zinc-500">{tDemo("statOpened")}</div>
 								<div className="text-lg font-semibold text-sky-300">{packsOpenedToday}</div>
 							</div>
 							<div className="rounded-xl border border-zinc-700/80 bg-zinc-900/80 px-3 py-2">
-								<div className="text-zinc-500">Session</div>
+								<div className="text-zinc-500">{tDemo("statSession")}</div>
 								<div className="text-lg font-semibold text-fuchsia-300">{sessionMinutes}m</div>
 							</div>
 						</div>
@@ -190,7 +191,7 @@ export default function DemoPage() {
 									: "bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
 							}`}
 						>
-							Pack Opening
+							{tDemo("modePack")}
 						</button>
 						<button
 							type="button"
@@ -201,10 +202,12 @@ export default function DemoPage() {
 									: "bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
 							}`}
 						>
-							Card Viewer
+							{tDemo("modeCard")}
 						</button>
 					</div>
-					<div className="text-xs text-zinc-400">Collection score: {collectionCount}</div>
+					<div className="text-xs text-zinc-400">
+						{tDemo("collectionScore", { count: collectionCount })}
+					</div>
 				</div>
 
 				{mode === "pack" && (
@@ -219,8 +222,8 @@ export default function DemoPage() {
 							/>
 							<div className="absolute left-3 top-3 rounded-lg border border-zinc-700/70 bg-zinc-900/85 px-3 py-1.5 text-xs text-zinc-300">
 								{packsRemaining > 0
-									? `${packsRemaining} free pack${packsRemaining > 1 ? "s" : ""} left`
-									: "No free packs left"}
+									? tDemo("packHudFree", { count: packsRemaining })
+									: tDemo("packHudNone")}
 							</div>
 						</div>
 					</section>
@@ -236,7 +239,7 @@ export default function DemoPage() {
 
 				{mode === "card" && (
 					<div className="mt-4 rounded-xl border border-zinc-800 bg-zinc-900/60 p-4">
-						<h2 className="mb-3 text-sm font-medium text-zinc-300">Select a card</h2>
+						<h2 className="mb-3 text-sm font-medium text-zinc-300">{tDemo("selectCard")}</h2>
 						<div className="flex flex-wrap gap-2">
 							{DEMO_CARDS.map((card) => (
 								<button
@@ -260,13 +263,15 @@ export default function DemoPage() {
 
 				<div className="mt-4 grid gap-3 md:grid-cols-3">
 					<div className="rounded-xl border border-zinc-800 bg-zinc-900/70 p-4">
-						<p className="text-xs uppercase tracking-widest text-zinc-500">Pack status</p>
+						<p className="text-xs uppercase tracking-widest text-zinc-500">
+							{tDemo("packStatusTitle")}
+						</p>
 						<p className="mt-2 text-sm text-zinc-300">
 							{packInProgress
-								? "Current pack in progress..."
+								? tDemo("packStatusInProgress")
 								: packComplete
-									? "Pack complete. Open the next one."
-									: "Ready for next opening."}
+									? tDemo("packStatusComplete")
+									: tDemo("packStatusReady")}
 						</p>
 						{packComplete && packsRemaining > 0 && (
 							<button
@@ -274,19 +279,21 @@ export default function DemoPage() {
 								onClick={openNextPack}
 								className="mt-3 w-full rounded-lg bg-emerald-500 px-3 py-2 text-sm font-medium text-emerald-950 hover:bg-emerald-400"
 							>
-								Open Next Pack
+								{tDemo("openNextPack")}
 							</button>
 						)}
 					</div>
 
 					<div className="rounded-xl border border-zinc-800 bg-zinc-900/70 p-4">
-						<p className="text-xs uppercase tracking-widest text-zinc-500">Refill options</p>
+						<p className="text-xs uppercase tracking-widest text-zinc-500">
+							{tDemo("refillTitle")}
+						</p>
 						<p className="mt-2 text-sm text-zinc-300">
 							{packsRemaining > 0
-								? "You can keep opening without waiting."
+								? tDemo("refillHasPacks")
 								: canClaimFreeRefill
-									? "Free refill is ready."
-									: `Free refill in ${formatTime(coolDownSecondsLeft)}`}
+									? tDemo("refillFreeReady")
+									: tDemo("refillCooldown", { time: formatTime(coolDownSecondsLeft) })}
 						</p>
 						<div className="mt-3 flex gap-2">
 							<button
@@ -295,33 +302,37 @@ export default function DemoPage() {
 								disabled={!canClaimFreeRefill}
 								className="flex-1 rounded-lg bg-zinc-700 px-3 py-2 text-sm font-medium text-zinc-100 disabled:cursor-not-allowed disabled:opacity-40"
 							>
-								Claim Free
+								{tDemo("claimFree")}
 							</button>
 							<button
 								type="button"
 								onClick={watchRewardedAd}
 								className="flex-1 rounded-lg bg-amber-400 px-3 py-2 text-sm font-medium text-amber-950 hover:bg-amber-300"
 							>
-								Watch Ad +{AD_REWARD_PACKS}
+								{tDemo("watchAd", { count: AD_REWARD_PACKS })}
 							</button>
 						</div>
 					</div>
 
 					<div className="rounded-xl border border-zinc-800 bg-zinc-900/70 p-4">
-						<p className="text-xs uppercase tracking-widest text-zinc-500">Last reward</p>
+						<p className="text-xs uppercase tracking-widest text-zinc-500">
+							{tDemo("rewardTitle")}
+						</p>
 						{lastReward ? (
 							<div className="mt-2 text-sm text-zinc-200">
-								<p>+{lastReward.coins} coins</p>
-								<p className="text-zinc-400">Top rarity: {lastReward.rarity}</p>
+								<p>{tDemo("rewardCoins", { coins: lastReward.coins })}</p>
+								<p className="text-zinc-400">
+									{tDemo("rewardTopRarity", { rarity: tRarity(lastReward.rarity) })}
+								</p>
 							</div>
 						) : (
-							<p className="mt-2 text-sm text-zinc-400">Open a pack to get rewards.</p>
+							<p className="mt-2 text-sm text-zinc-400">{tDemo("rewardEmpty")}</p>
 						)}
 					</div>
 				</div>
 
 				<footer className="mt-5 border-t border-zinc-800 pt-4 text-center text-xs text-zinc-500">
-					Gacharoo demo loop: free packs, ordered reveals, cooldowns, and rewarded refill.
+					{tDemo("footerBlurb")}
 				</footer>
 			</div>
 		</main>
