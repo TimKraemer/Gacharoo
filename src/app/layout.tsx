@@ -4,6 +4,7 @@ import Script from "next/script"
 import { NextIntlClientProvider } from "next-intl"
 import { getLocale, getMessages } from "next-intl/server"
 import { ConsoleNoiseFilter } from "@/components/dev/console-noise-filter"
+import { BRAND_MASCOT_SVG_PATH } from "@/lib/brand/brand-assets"
 import "./globals.css"
 
 const displayFont = Bebas_Neue({
@@ -22,8 +23,8 @@ export const metadata: Metadata = {
 	description:
 		"Create trading card sets from your friends, communities, or any data source. Collect, trade, and battle with 3D holographic cards.",
 	icons: {
-		icon: "/brand/gacharoo-mascot.svg",
-		apple: "/brand/gacharoo-mascot.svg",
+		icon: BRAND_MASCOT_SVG_PATH,
+		apple: BRAND_MASCOT_SVG_PATH,
 	},
 }
 

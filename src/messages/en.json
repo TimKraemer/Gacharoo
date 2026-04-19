@@ -2,7 +2,11 @@
 	"brand": {
 		"logoLockupAriaLabel": "Gacharoo logo: kangaroo mascot with a holographic trading card booster pack",
 		"mascotAriaLabel": "Gacharoo mascot: friendly kangaroo with a holographic booster pack",
+		"goHomeAriaLabel": "Gacharoo home",
+		"backToMarketing": "Back to marketing home",
+		"marketingNavAriaLabel": "Marketing links",
 		"homeSubtitle": "Turn anything into a trading card game.",
+		"homeLayoutHint": "Marketing pages use a soft violet glow. The interactive demo uses a darker game canvas.",
 		"tryDemo": "Try the Demo",
 		"openSource": "Open Source"
 	},

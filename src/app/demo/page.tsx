@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useTranslations } from "next-intl"
 import { useEffect, useMemo, useState } from "react"
 import { GacharooLogoLockup } from "@/components/brand/gacharoo-logo-lockup"
@@ -143,13 +144,17 @@ export default function DemoPage() {
 				<header className="mb-6 rounded-2xl border border-violet-500/20 bg-zinc-900/70 p-4 shadow-[0_0_60px_-22px_rgba(139,92,246,0.65)] backdrop-blur">
 					<div className="flex flex-wrap items-center justify-between gap-4">
 						<div className="min-w-0 space-y-2">
+							<Link
+								href="/"
+								className="inline-flex min-h-8 items-center text-sm font-medium text-violet-200/90 outline-none ring-violet-400/60 transition hover:text-white focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
+							>
+								{tBrand("backToMarketing")}
+							</Link>
 							<GacharooLogoLockup
 								lockupAriaLabel={tBrand("logoLockupAriaLabel")}
 								tagline={tCommon("appName")}
-								taglineClassName="text-violet-300/80"
+								tone="dark"
 								appName={tDemo("packLoopTitle")}
-								nameClassName="text-zinc-100"
-								mascotClassName="h-14 w-14 shrink-0 drop-shadow-[0_0_16px_rgba(139,92,246,0.55)] md:h-16 md:w-16"
 							/>
 							<p className="text-sm text-zinc-400">{tDemo("headerBlurb")}</p>
 						</div>
