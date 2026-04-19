@@ -9,7 +9,6 @@
 		"lint": "biome check .",
 		"test": "bun test",
 		"lint:fix": "biome check --write .",
-		"test": "bun test",
 		"format": "biome format --write .",
 		"db:generate": "drizzle-kit generate",
 		"db:push": "drizzle-kit push",
