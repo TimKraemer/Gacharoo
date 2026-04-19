@@ -14,6 +14,7 @@
 		"db:push": "drizzle-kit push",
 		"db:migrate": "drizzle-kit migrate",
 		"db:studio": "drizzle-kit studio",
+		"brand:generate": "bun run scripts/generate-gacharoo-brand-assets.ts",
 		"git:hooks": "git config core.hooksPath .githooks",
 		"git:assert-pushed": "bash scripts/assert-pushed-to-origin.sh"
 	},

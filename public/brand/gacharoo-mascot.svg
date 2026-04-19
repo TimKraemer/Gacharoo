@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-labelledby="gacharoo-mascot-title">
+	<title id="gacharoo-mascot-title">Gacharoo mascot</title>
+	<defs>
+		<linearGradient id="gacharoo-pack" x1="0%" y1="0%" x2="100%" y2="100%">
+			<stop offset="0%" style="stop-color:#a78bfa;stop-opacity:1" />
+			<stop offset="55%" style="stop-color:#7c3aed;stop-opacity:1" />
+			<stop offset="100%" style="stop-color:#4c1d95;stop-opacity:1" />
+		</linearGradient>
+		<linearGradient id="gacharoo-holo" x1="0%" y1="0%" x2="100%" y2="0%">
+			<stop offset="0%" style="stop-color:#fbbf24;stop-opacity:0.35" />
+			<stop offset="40%" style="stop-color:#22d3ee;stop-opacity:0.55" />
+			<stop offset="100%" style="stop-color:#c084fc;stop-opacity:0.4" />
+		</linearGradient>
+	</defs>
+	<!-- ear back -->
+	<ellipse cx="34" cy="38" rx="14" ry="22" transform="rotate(-18 34 38)" fill="#7c3aed" />
+	<!-- head -->
+	<ellipse cx="58" cy="52" rx="32" ry="28" fill="#8b5cf6" />
+	<!-- ear front -->
+	<ellipse cx="82" cy="34" rx="12" ry="20" transform="rotate(22 82 34)" fill="#a78bfa" />
+	<!-- muzzle -->
+	<ellipse cx="52" cy="58" rx="18" ry="14" fill="#c4b5fd" />
+	<!-- nose -->
+	<ellipse cx="38" cy="56" rx="7" ry="6" fill="#1e1b4b" />
+	<!-- eye -->
+	<circle cx="70" cy="48" r="6" fill="#fafafa" />
+	<circle cx="71" cy="47" r="2.5" fill="#312e81" />
+	<!-- pouch / booster -->
+	<rect x="44" y="68" width="52" height="44" rx="10" fill="url(#gacharoo-pack)" />
+	<rect x="46" y="70" width="48" height="40" rx="8" fill="none" stroke="url(#gacharoo-holo)" stroke-width="3" opacity="0.9" />
+	<!-- capsule seam -->
+	<path d="M70 70 L70 108" stroke="#ddd6fe" stroke-width="1.5" stroke-opacity="0.5" />
+	<!-- spark -->
+	<path d="M88 78 L90 86 L98 84 L92 90 L96 98 L88 92 L82 100 L84 90 L76 88 L84 84 Z" fill="#fbbf24" opacity="0.95" />
+</svg>

@@ -19,6 +19,9 @@ data/postgres/
 data/images/
 data/backups/
 
+# Optional fal.ai raster exports (see scripts/generate-gacharoo-brand-assets.ts)
+public/brand/fal-generated/
+
 # misc
 .DS_Store
 *.pem

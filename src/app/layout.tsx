@@ -21,6 +21,10 @@ export const metadata: Metadata = {
 	title: "Gacharoo — Turn Anything Into a Card Game",
 	description:
 		"Create trading card sets from your friends, communities, or any data source. Collect, trade, and battle with 3D holographic cards.",
+	icons: {
+		icon: "/brand/gacharoo-mascot.svg",
+		apple: "/brand/gacharoo-mascot.svg",
+	},
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

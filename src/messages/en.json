@@ -1,4 +1,15 @@
 {
+	"brand": {
+		"logoLockupAriaLabel": "Gacharoo logo: kangaroo mascot with a holographic trading card booster pack",
+		"mascotAriaLabel": "Gacharoo mascot: friendly kangaroo with a holographic booster pack",
+		"homeSubtitle": "Turn anything into a trading card game.",
+		"tryDemo": "Try the Demo",
+		"openSource": "Open Source"
+	},
+	"demo": {
+		"packLoopTitle": "Pack Loop Demo",
+		"headerBlurb": "Open packs, reveal in order, collect rewards, then refill."
+	},
 	"common": {
 		"appName": "Gacharoo",
 		"loading": "Loading...",

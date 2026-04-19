@@ -1,6 +1,8 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { useEffect, useMemo, useState } from "react"
+import { GacharooLogoLockup } from "@/components/brand/gacharoo-logo-lockup"
 import { CardScene } from "@/features/cards/components/card-scene"
 import type { CardData } from "@/features/cards/types"
 import { PackOpeningScene } from "@/features/packs/components/pack-opening-scene"
@@ -33,6 +35,9 @@ function formatTime(totalSeconds: number) {
 }
 
 export default function DemoPage() {
+	const tBrand = useTranslations("brand")
+	const tCommon = useTranslations("common")
+	const tDemo = useTranslations("demo")
 	const [mode, setMode] = useState<"card" | "pack">("pack")
 	const [selectedCard, setSelectedCard] = useState<CardData>(DEMO_CARDS[0])
 	const [packKey, setPackKey] = useState(0)
@@ -137,12 +142,16 @@ export default function DemoPage() {
 			<div className="mx-auto max-w-6xl px-4 py-6 md:px-8">
 				<header className="mb-6 rounded-2xl border border-violet-500/20 bg-zinc-900/70 p-4 shadow-[0_0_60px_-22px_rgba(139,92,246,0.65)] backdrop-blur">
 					<div className="flex flex-wrap items-center justify-between gap-4">
-						<div>
-							<p className="text-xs uppercase tracking-[0.2em] text-violet-300/80">Gacharoo</p>
-							<h1 className="font-display text-4xl md:text-5xl">Pack Loop Demo</h1>
-							<p className="mt-1 text-sm text-zinc-400">
-								Open packs, reveal in order, collect rewards, then refill.
-							</p>
+						<div className="min-w-0 space-y-2">
+							<GacharooLogoLockup
+								lockupAriaLabel={tBrand("logoLockupAriaLabel")}
+								tagline={tCommon("appName")}
+								taglineClassName="text-violet-300/80"
+								appName={tDemo("packLoopTitle")}
+								nameClassName="text-zinc-100"
+								mascotClassName="h-14 w-14 shrink-0 drop-shadow-[0_0_16px_rgba(139,92,246,0.55)] md:h-16 md:w-16"
+							/>
+							<p className="text-sm text-zinc-400">{tDemo("headerBlurb")}</p>
 						</div>
 						<div className="grid grid-cols-2 gap-2 text-xs sm:grid-cols-4">
 							<div className="rounded-xl border border-zinc-700/80 bg-zinc-900/80 px-3 py-2">
