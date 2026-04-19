@@ -8,4 +8,4 @@ export interface PackResult {
 	isGolden: boolean
 }
 
-export type RevealState = "sealed" | "opening" | "revealing" | "complete"
+export type RevealState = "sealed" | "opening" | "dealing" | "revealing" | "complete"

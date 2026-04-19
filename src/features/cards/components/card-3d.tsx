@@ -2,7 +2,7 @@
 
 import { useRef, useState, useMemo } from "react"
 import { useFrame, type ThreeEvent } from "@react-three/fiber"
-import { RoundedBox, Text, Float } from "@react-three/drei"
+import { RoundedBox, Text } from "@react-three/drei"
 import type { Group, Mesh } from "three"
 import * as THREE from "three"
 import type { CardData } from "../types"
@@ -39,10 +39,7 @@ export function Card3D({
 		() => new THREE.Color(RARITY_BORDER_COLORS[card.rarity]),
 		[card.rarity],
 	)
-	const glowColor = useMemo(
-		() => new THREE.Color(RARITY_GLOW_COLORS[card.rarity]),
-		[card.rarity],
-	)
+	const glowColor = useMemo(() => new THREE.Color(RARITY_GLOW_COLORS[card.rarity]), [card.rarity])
 	const glowIntensity = RARITY_GLOW_INTENSITY[card.rarity]
 
 	useFrame(({ pointer }) => {
@@ -59,6 +56,7 @@ export function Card3D({
 	}
 
 	return (
+		// biome-ignore lint/a11y/noStaticElementInteractions: R3F group handles pointer interactions in canvas.
 		<group
 			ref={groupRef}
 			scale={scale}
@@ -87,9 +85,7 @@ export function Card3D({
 
 			{/* Border outline */}
 			<lineSegments position={[0, 0, CARD_DEPTH / 2 + 0.002]}>
-				<edgesGeometry
-					args={[new THREE.PlaneGeometry(CARD_WIDTH - 0.04, CARD_HEIGHT - 0.04)]}
-				/>
+				<edgesGeometry args={[new THREE.PlaneGeometry(CARD_WIDTH - 0.04, CARD_HEIGHT - 0.04)]} />
 				<lineBasicMaterial color={borderColor} linewidth={2} />
 			</lineSegments>
 
@@ -103,7 +99,6 @@ export function Card3D({
 						anchorX="center"
 						anchorY="middle"
 						maxWidth={CARD_WIDTH - 0.1}
-						font="/fonts/bebas-neue-v14-latin-regular.woff2"
 					>
 						{card.title}
 					</Text>
@@ -190,7 +185,12 @@ function StatBar({
 	value,
 	x,
 	color,
-}: { label: string; value: number; x: number; color: string }) {
+}: {
+	label: string
+	value: number
+	x: number
+	color: string
+}) {
 	return (
 		<group position={[x, 0, 0]}>
 			<Text fontSize={0.018} color="#64748b" position={[0, 0.02, 0]} anchorX="center">

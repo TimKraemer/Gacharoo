@@ -25,6 +25,7 @@ export function PackMesh({ onClick }: PackMeshProps) {
 
 	return (
 		<Float speed={2} rotationIntensity={0.1} floatIntensity={0.3}>
+			{/* biome-ignore lint/a11y/noStaticElementInteractions: R3F group handles pointer interactions in canvas. */}
 			<group
 				ref={groupRef}
 				onClick={handleClick}
@@ -34,11 +35,7 @@ export function PackMesh({ onClick }: PackMeshProps) {
 			>
 				{/* Pack body */}
 				<RoundedBox args={[0.8, 1.1, 0.08]} radius={0.03} smoothness={4}>
-					<meshStandardMaterial
-						color="#1e1b4b"
-						roughness={0.2}
-						metalness={0.6}
-					/>
+					<meshStandardMaterial color="#1e1b4b" roughness={0.2} metalness={0.6} />
 				</RoundedBox>
 
 				{/* Pack foil shine */}
@@ -60,7 +57,6 @@ export function PackMesh({ onClick }: PackMeshProps) {
 					color="#e2e8f0"
 					anchorX="center"
 					anchorY="middle"
-					font="/fonts/bebas-neue-v14-latin-regular.woff2"
 				>
 					GACHAROO
 				</Text>

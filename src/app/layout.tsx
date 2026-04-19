@@ -3,6 +3,7 @@ import { Bebas_Neue, DM_Sans } from "next/font/google"
 import Script from "next/script"
 import { NextIntlClientProvider } from "next-intl"
 import { getLocale, getMessages } from "next-intl/server"
+import { ConsoleNoiseFilter } from "@/components/dev/console-noise-filter"
 import "./globals.css"
 
 const displayFont = Bebas_Neue({
@@ -30,6 +31,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 		<html lang={locale} className={`${displayFont.variable} ${bodyFont.variable}`}>
 			<body className="font-body antialiased bg-background text-foreground min-h-screen">
 				<NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+				{process.env.NODE_ENV === "development" && <ConsoleNoiseFilter />}
 				{process.env.NEXT_PUBLIC_UMAMI_URL && process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
 					<Script
 						src={`${process.env.NEXT_PUBLIC_UMAMI_URL}/script.js`}

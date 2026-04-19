@@ -65,6 +65,13 @@ src/features/{feature-name}/
 - Prefer `const` over `let`. Never use `var`.
 - Use `nanoid` for user-facing IDs (invite codes, share links). Use UUID for internal database IDs.
 
+### Agent QA Gate (Mandatory)
+
+- Before asking the user to test, run a browser click-through on changed routes and core UI actions.
+- Fix obvious runtime bugs first (broken buttons, missing assets, failed requests, crashes).
+- Check browser console + dev server output and fix new project-level errors/warnings introduced by the change.
+- Only hand testing back to the user after this gate is done.
+
 ### Naming
 
 - Files: `kebab-case.ts`, `kebab-case.tsx`

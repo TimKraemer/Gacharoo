@@ -1,34 +1,51 @@
 "use client"
 
-import { useState, useCallback } from "react"
-import { Canvas } from "@react-three/fiber"
 import { Environment } from "@react-three/drei"
-import { Suspense } from "react"
-import { Card3D } from "@/features/cards/components/card-3d"
+import { Canvas, useFrame } from "@react-three/fiber"
+import { Suspense, useCallback, useRef, useState } from "react"
+import type { Mesh } from "three"
 import type { CardData } from "@/features/cards/types"
 import type { RevealState } from "../types"
-import { PackMesh } from "./pack-mesh"
 import { CardRevealStack } from "./card-reveal-stack"
+import { PackMesh } from "./pack-mesh"
 
 interface PackOpeningSceneProps {
 	cards: CardData[]
 	onComplete?: () => void
+	onPackStart?: () => boolean
 	className?: string
 }
 
-export function PackOpeningScene({ cards, onComplete, className }: PackOpeningSceneProps) {
+export function PackOpeningScene({
+	cards,
+	onComplete,
+	onPackStart,
+	className,
+}: PackOpeningSceneProps) {
 	const [revealState, setRevealState] = useState<RevealState>("sealed")
 	const [revealedIndices, setRevealedIndices] = useState<Set<number>>(new Set())
+	const [nextRevealIndex, setNextRevealIndex] = useState(0)
 
 	const handlePackTap = useCallback(() => {
-		if (revealState === "sealed") {
-			setRevealState("opening")
-			setTimeout(() => setRevealState("revealing"), 600)
+		if (revealState !== "sealed") {
+			return
 		}
-	}, [revealState])
+
+		if (onPackStart && !onPackStart()) {
+			return
+		}
+
+		setRevealState("opening")
+		window.setTimeout(() => setRevealState("dealing"), 260)
+		window.setTimeout(() => setRevealState("revealing"), 1050)
+	}, [onPackStart, revealState])
 
 	const handleCardReveal = useCallback(
 		(index: number) => {
+			if (revealState !== "revealing" || index !== nextRevealIndex) {
+				return
+			}
+
 			setRevealedIndices((prev) => {
 				const next = new Set(prev)
 				next.add(index)
@@ -40,9 +57,11 @@ export function PackOpeningScene({ cards, onComplete, className }: PackOpeningSc
 				}
 				return next
 			})
+			setNextRevealIndex(index + 1)
 		},
-		[cards.length, onComplete],
+		[cards.length, nextRevealIndex, onComplete, revealState],
 	)
+	const canRevealNext = revealState === "revealing" && nextRevealIndex < cards.length
 
 	return (
 		<div className={className}>
@@ -56,14 +75,16 @@ export function PackOpeningScene({ cards, onComplete, className }: PackOpeningSc
 					<directionalLight position={[3, 5, 4]} intensity={0.8} castShadow />
 					<pointLight position={[-3, 2, 2]} intensity={0.3} color="#818cf8" />
 
-					{revealState === "sealed" && (
-						<PackMesh onClick={handlePackTap} />
-					)}
+					{revealState === "sealed" && <PackMesh onClick={handlePackTap} />}
 
-					{(revealState === "revealing" || revealState === "complete") && (
+					{(revealState === "dealing" ||
+						revealState === "revealing" ||
+						revealState === "complete") && (
 						<CardRevealStack
 							cards={cards}
 							revealedIndices={revealedIndices}
+							nextRevealIndex={nextRevealIndex}
+							interactive={revealState === "revealing"}
 							onCardClick={handleCardReveal}
 						/>
 					)}
@@ -75,19 +96,49 @@ export function PackOpeningScene({ cards, onComplete, className }: PackOpeningSc
 			</Canvas>
 
 			{/* UI Overlay */}
-			<div className="absolute bottom-6 left-0 right-0 text-center pointer-events-none">
+			<div className="absolute bottom-6 left-0 right-0 text-center">
 				{revealState === "sealed" && (
-					<p className="text-muted-foreground text-sm animate-pulse">
-						Tap to open pack
+					<div className="space-y-2">
+						<p className="pointer-events-none text-muted-foreground text-sm animate-pulse">
+							Tap to open pack
+						</p>
+						<button
+							type="button"
+							onClick={handlePackTap}
+							className="rounded-lg bg-violet-500 px-4 py-2 text-xs font-semibold text-white hover:bg-violet-400"
+						>
+							Open Pack
+						</button>
+					</div>
+				)}
+				{revealState === "opening" && (
+					<p className="pointer-events-none text-amber-300 text-sm font-semibold tracking-wide uppercase animate-pulse">
+						Ripping foil...
+					</p>
+				)}
+				{revealState === "dealing" && (
+					<p className="pointer-events-none text-violet-300 text-sm font-medium animate-pulse">
+						Dealing cards...
 					</p>
 				)}
 				{revealState === "revealing" && (
-					<p className="text-muted-foreground text-sm">
-						Tap cards to reveal ({revealedIndices.size}/{cards.length})
-					</p>
+					<div className="space-y-2">
+						<p className="pointer-events-none text-muted-foreground text-sm">
+							Reveal cards in order ({revealedIndices.size}/{cards.length})
+						</p>
+						{canRevealNext && (
+							<button
+								type="button"
+								onClick={() => handleCardReveal(nextRevealIndex)}
+								className="rounded-lg bg-zinc-100 px-4 py-2 text-xs font-semibold text-zinc-950 hover:bg-zinc-300"
+							>
+								Reveal Next Card
+							</button>
+						)}
+					</div>
 				)}
 				{revealState === "complete" && (
-					<p className="text-primary text-sm font-medium">
+					<p className="pointer-events-none text-primary text-sm font-medium">
 						All cards revealed!
 					</p>
 				)}
@@ -97,10 +148,26 @@ export function PackOpeningScene({ cards, onComplete, className }: PackOpeningSc
 }
 
 function OpeningFlash() {
+	const meshRef = useRef<Mesh>(null)
+
+	useFrame(({ clock }) => {
+		const mesh = meshRef.current
+		if (!mesh) {
+			return
+		}
+
+		const material = mesh.material
+		if (!("opacity" in material)) {
+			return
+		}
+
+		material.opacity = 0.28 + Math.sin(clock.elapsedTime * 16) * 0.2
+	})
+
 	return (
-		<mesh>
+		<mesh ref={meshRef}>
 			<sphereGeometry args={[0.5, 16, 16]} />
-			<meshBasicMaterial color="#fbbf24" transparent opacity={0.6} />
+			<meshBasicMaterial color="#fbbf24" transparent opacity={0.4} />
 		</mesh>
 	)
 }
