@@ -1,27 +1,29 @@
 #!/usr/bin/env bun
 /**
- * Generates raster brand art via fal.ai **Nano Banana 2** (`fal-ai/nano-banana-2`).
+ * Generates the primary mascot PNG via fal.ai **Nano Banana 2** (`fal-ai/nano-banana-2`).
  * Set `FAL_KEY` from https://fal.ai/dashboard — never commit keys.
  *
- * Outputs (gitignored): `public/brand/fal-generated/avatar.png`,
- * `public/brand/fal-generated/logo-wide.png`
+ * Default output (commit this file after review): `public/brand/gacharoo-mascot.png`
  *
- * Run: `bun run scripts/generate-gacharoo-brand-assets.ts`
+ * Run: `FAL_KEY=... bun run brand:generate`
+ * Optional wide banner: `FAL_KEY=... bun run scripts/generate-gacharoo-brand-assets.ts --wide`
  */
 import { mkdir, writeFile } from "node:fs/promises"
 import path from "node:path"
 
 const FAL_KEY = process.env.FAL_KEY
 const MODEL_ID = "fal-ai/nano-banana-2"
-const OUT_DIR = path.join(process.cwd(), "public", "brand", "fal-generated")
+const MASCOT_OUT = path.join(process.cwd(), "public", "brand", "gacharoo-mascot.png")
+const WIDE_OUT_DIR = path.join(process.cwd(), "public", "brand", "fal-generated")
 
-const AVATAR_PROMPT =
-	"Mascot character: cute stylized kangaroo holding a holographic trading card booster pack, violet and teal highlights, friendly vector-game style, centered, plain dark background, no text, no watermark area, square composition"
+/** Emphasize real macropod anatomy + Gacharoo zinc/violet game UI harmony. */
+const MASCOT_PROMPT =
+	"Premium mobile gacha key art, NOT abstract shapes: a clearly recognizable red kangaroo (Macropus rufus) with long thick tail, upright ears, elongated snout, dark nose, visible forepaws, subtle pouch hint, friendly eyes. The kangaroo is holding a sealed trading-card booster pack with rainbow holographic foil reflections. Background deep charcoal #09090b with soft violet #7c3aed rim light and faint teal specular highlights matching a dark trading-card app UI. Full-body three-quarter view, strong readable silhouette, painterly PBR illustration, no text, no watermark, no human, square 1:1."
 
 const WIDE_LOGO_PROMPT =
-	"Wide logo banner: playful kangaroo plus floating holographic gacha booster pack, word-free mark suitable for a game called Gacharoo, purple and gold palette, dark background, horizontal 16:9, crisp edges, no text"
+	"Wide 16:9 banner: same red kangaroo mascot identity holding holographic booster, deep charcoal and violet neon palette, premium gacha game marketing art, no text, no watermark."
 
-type FalImage = { url?: string; content_type?: string }
+type FalImage = { url?: string }
 
 type FalResult = {
 	images?: FalImage[]
@@ -62,32 +64,29 @@ async function downloadToFile(url: string, filePath: string) {
 	await writeFile(filePath, buffer)
 }
 
-async function main() {
-	if (!FAL_KEY) {
-		console.error("Missing FAL_KEY. Export a fal.ai API key and retry.")
-		process.exit(1)
-	}
-
-	await mkdir(OUT_DIR, { recursive: true })
-
-	const avatarResult = await falSubscribeJson({
-		prompt: AVATAR_PROMPT,
+async function generateMascotPng() {
+	const result = await falSubscribeJson({
+		prompt: MASCOT_PROMPT,
 		num_images: 1,
 		aspect_ratio: "1:1",
 		output_format: "png",
 		resolution: "1K",
 	})
 
-	const avatarUrl = avatarResult.images?.[0]?.url
-	if (!avatarUrl) {
-		console.error("Unexpected fal response (avatar):", JSON.stringify(avatarResult, null, 2))
+	const url = result.images?.[0]?.url
+	if (!url) {
+		console.error("Unexpected fal response (mascot):", JSON.stringify(result, null, 2))
 		process.exit(1)
 	}
 
-	await downloadToFile(avatarUrl, path.join(OUT_DIR, "avatar.png"))
-	console.log(`Wrote ${path.relative(process.cwd(), path.join(OUT_DIR, "avatar.png"))}`)
+	await downloadToFile(url, MASCOT_OUT)
+	console.log(`Wrote ${path.relative(process.cwd(), MASCOT_OUT)}`)
+}
 
-	const wideResult = await falSubscribeJson({
+async function generateWidePng() {
+	await mkdir(WIDE_OUT_DIR, { recursive: true })
+
+	const result = await falSubscribeJson({
 		prompt: WIDE_LOGO_PROMPT,
 		num_images: 1,
 		aspect_ratio: "16:9",
@@ -95,14 +94,30 @@ async function main() {
 		resolution: "1K",
 	})
 
-	const wideUrl = wideResult.images?.[0]?.url
-	if (!wideUrl) {
-		console.error("Unexpected fal response (wide):", JSON.stringify(wideResult, null, 2))
+	const url = result.images?.[0]?.url
+	if (!url) {
+		console.error("Unexpected fal response (wide):", JSON.stringify(result, null, 2))
 		process.exit(1)
 	}
 
-	await downloadToFile(wideUrl, path.join(OUT_DIR, "logo-wide.png"))
-	console.log(`Wrote ${path.relative(process.cwd(), path.join(OUT_DIR, "logo-wide.png"))}`)
+	const widePath = path.join(WIDE_OUT_DIR, "logo-wide.png")
+	await downloadToFile(url, widePath)
+	console.log(`Wrote ${path.relative(process.cwd(), widePath)}`)
+}
+
+async function main() {
+	if (!FAL_KEY) {
+		console.error("Missing FAL_KEY. Export a fal.ai API key and retry.")
+		process.exit(1)
+	}
+
+	const wantsWide = process.argv.includes("--wide")
+
+	await generateMascotPng()
+
+	if (wantsWide) {
+		await generateWidePng()
+	}
 }
 
 await main()

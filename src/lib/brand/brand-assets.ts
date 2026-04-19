@@ -6,6 +6,9 @@
 /** Primary vector mark (mascot + holo pack); safe for favicon, PWA, and small UI chrome. */
 export const BRAND_MASCOT_SVG_PATH = "/brand/gacharoo-mascot.svg" as const
 
+/** Optional Nano Banana 2 raster mascot; commit after `bun run brand:generate` with `FAL_KEY`. */
+export const BRAND_MASCOT_PNG_PATH = "/brand/gacharoo-mascot.png" as const
+
 /**
  * Minimum on-screen size for the mascot mark when it is the only branded control
  * (e.g. header home control). Prefer 44px+ for touch targets.

@@ -1,6 +1,9 @@
 "use client"
 
+import Image from "next/image"
 import { useId } from "react"
+import { usePreferredMascotUrl } from "@/hooks/use-preferred-mascot-url"
+import { BRAND_MASCOT_PNG_PATH } from "@/lib/brand/brand-assets"
 
 export type GacharooMascotMarkProps = {
 	className?: string
@@ -11,8 +14,7 @@ export type GacharooMascotMarkProps = {
 }
 
 /**
- * Inline vector mark: kangaroo + holographic booster (Gacharoo wordplay).
- * Pair with a parent `aria-label` on a lockup, or pass `aria-label` when used alone.
+ * Mascot mark: prefers committed Nano Banana 2 PNG when present, else inline SVG fallback.
  */
 export function GacharooMascotMark({
 	className,
@@ -22,6 +24,25 @@ export function GacharooMascotMark({
 	const uid = useId().replace(/:/g, "")
 	const packGradId = `gacharoo-pack-${uid}`
 	const holoGradId = `gacharoo-holo-${uid}`
+	const { url, onRasterError } = usePreferredMascotUrl()
+
+	const wrapperClass = `relative inline-block ${className ?? ""}`.trim()
+
+	if (url === BRAND_MASCOT_PNG_PATH) {
+		return (
+			<span className={wrapperClass} aria-hidden={decorative ? true : undefined}>
+				<Image
+					src={BRAND_MASCOT_PNG_PATH}
+					alt={decorative ? "" : (ariaLabel ?? "Gacharoo")}
+					fill
+					className="object-contain"
+					sizes="120px"
+					unoptimized
+					onError={onRasterError}
+				/>
+			</span>
+		)
+	}
 
 	const a11y = decorative
 		? { "aria-hidden": true as const }

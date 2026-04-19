@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { BRAND_MASCOT_SVG_PATH } from "@/lib/brand/brand-assets"
+import { usePreferredMascotUrl } from "@/hooks/use-preferred-mascot-url"
 
 export type GacharooBrandAvatarProps = {
 	/** Display size in CSS pixels (width and height). */
@@ -17,7 +17,7 @@ const sizeClass: Record<NonNullable<GacharooBrandAvatarProps["size"]>, string> =
 }
 
 /**
- * Rounded-rect avatar using the shipped mascot SVG (same asset as default user image).
+ * Rounded-rect avatar: prefers committed Nano Banana 2 PNG when present, else SVG.
  */
 export function GacharooBrandAvatar({
 	size = 48,
@@ -26,15 +26,18 @@ export function GacharooBrandAvatar({
 	priority = false,
 }: GacharooBrandAvatarProps) {
 	const pixel = size
+	const { url, onRasterError } = usePreferredMascotUrl()
 
 	return (
 		<Image
-			src={BRAND_MASCOT_SVG_PATH}
+			key={url}
+			src={url}
 			alt={alt}
 			width={pixel}
 			height={pixel}
 			priority={priority}
 			unoptimized
+			onError={onRasterError}
 			className={`rounded-xl border border-violet-500/35 bg-violet-950/40 object-cover shadow-[0_0_24px_-8px_rgba(139,92,246,0.55)] ${sizeClass[size]} ${className}`}
 		/>
 	)
