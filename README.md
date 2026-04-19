@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## GitHub push policy
+
+Work must land on GitHub on a regular cadence, not only as local commits. Read [`docs/GIT_PUSH_POLICY.md`](./docs/GIT_PUSH_POLICY.md), install hooks once (`bun run git:hooks`), and use `bun run git:assert-pushed` before you wrap a session that included commits.
+
 ## Getting Started
 
 First, run the development server:

@@ -12,7 +12,9 @@
 		"db:generate": "drizzle-kit generate",
 		"db:push": "drizzle-kit push",
 		"db:migrate": "drizzle-kit migrate",
-		"db:studio": "drizzle-kit studio"
+		"db:studio": "drizzle-kit studio",
+		"git:hooks": "git config core.hooksPath .githooks",
+		"git:assert-pushed": "bash scripts/assert-pushed-to-origin.sh"
 	},
 	"dependencies": {
 		"@dicebear/collection": "^9.4.1",

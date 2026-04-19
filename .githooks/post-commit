@@ -1,0 +1,21 @@
+#!/bin/sh
+# Non-blocking reminder: keep GitHub in sync with local commits (see docs/GIT_PUSH_POLICY.md).
+
+git rev-parse --git-dir >/dev/null 2>&1 || exit 0
+
+branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null) || exit 0
+if [ "$branch" = "HEAD" ]; then
+	exit 0
+fi
+
+if ! git rev-parse --verify -q '@{u}' >/dev/null 2>&1; then
+	printf '%s\n' "[gacharoo] No upstream for '${branch}'. Policy: git push -u origin ${branch}" >&2
+	exit 0
+fi
+
+count=$(git rev-list --count '@{u}..HEAD' 2>/dev/null || echo 0)
+if [ "${count}" -gt 0 ]; then
+	printf '%s\n' "[gacharoo] ${count} unpushed commit(s) vs upstream. Push soon: git push" >&2
+fi
+
+exit 0

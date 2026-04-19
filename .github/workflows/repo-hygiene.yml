@@ -1,0 +1,25 @@
+name: Repo hygiene
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  git-push-policy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify Git push policy artifacts
+        run: |
+          test -f docs/GIT_PUSH_POLICY.md
+          test -f .githooks/post-commit
+          test -f scripts/assert-pushed-to-origin.sh
+          test -x .githooks/post-commit
+          test -x scripts/assert-pushed-to-origin.sh
