@@ -1,10 +1,10 @@
 "use client"
 
+import { ContactShadows, Environment } from "@react-three/drei"
 import { Canvas } from "@react-three/fiber"
-import { Environment, ContactShadows } from "@react-three/drei"
 import { Suspense } from "react"
-import { Card3D } from "./card-3d"
 import type { CardData } from "../types"
+import { Card3D } from "./card-3d"
 
 interface CardSceneProps {
 	card: CardData
@@ -23,13 +23,7 @@ export function CardScene({ card, className }: CardSceneProps) {
 					<ambientLight intensity={0.5} />
 					<directionalLight position={[5, 5, 5]} intensity={0.8} />
 					<Card3D card={card} />
-					<ContactShadows
-						position={[0, -0.5, 0]}
-						opacity={0.4}
-						scale={2}
-						blur={2}
-						far={1}
-					/>
+					<ContactShadows position={[0, -0.5, 0]} opacity={0.4} scale={2} blur={2} far={1} />
 					<Environment preset="city" />
 				</Suspense>
 			</Canvas>

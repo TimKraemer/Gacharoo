@@ -1,4 +1,4 @@
-import type { Rarity, ElementType } from "@/types/rarity"
+import type { ElementType, Rarity } from "@/types/rarity"
 
 export interface CardData {
 	id: string

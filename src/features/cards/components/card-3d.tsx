@@ -1,16 +1,16 @@
 "use client"
 
-import { useRef, useState, useMemo } from "react"
-import { useFrame, type ThreeEvent } from "@react-three/fiber"
 import { RoundedBox, Text } from "@react-three/drei"
+import { type ThreeEvent, useFrame } from "@react-three/fiber"
+import { useMemo, useRef, useState } from "react"
 import type { Group, Mesh } from "three"
 import * as THREE from "three"
 import type { CardData } from "../types"
 import {
+	getRaritySymbol,
 	RARITY_BORDER_COLORS,
 	RARITY_GLOW_COLORS,
 	RARITY_GLOW_INTENSITY,
-	getRaritySymbol,
 } from "../utils/rarity-visuals"
 
 const CARD_WIDTH = 0.63

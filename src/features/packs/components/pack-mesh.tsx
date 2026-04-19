@@ -1,8 +1,8 @@
 "use client"
 
+import { Float, RoundedBox, Text } from "@react-three/drei"
+import { type ThreeEvent, useFrame } from "@react-three/fiber"
 import { useRef, useState } from "react"
-import { useFrame, type ThreeEvent } from "@react-three/fiber"
-import { RoundedBox, Text, Float } from "@react-three/drei"
 import type { Group } from "three"
 
 interface PackMeshProps {
