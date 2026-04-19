@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useTranslations } from "next-intl"
 import { useEffect, useMemo, useState } from "react"
 import { GacharooLogoLockup } from "@/components/brand/gacharoo-logo-lockup"
+import { StaggerEntrance } from "@/components/motion/stagger-entrance"
 import { CardScene } from "@/features/cards/components/card-scene"
 import type { CardData } from "@/features/cards/types"
 import { PackOpeningScene } from "@/features/packs/components/pack-opening-scene"
@@ -141,8 +142,11 @@ export default function DemoPage() {
 
 	return (
 		<main className="min-h-screen bg-linear-to-b from-zinc-950 via-zinc-900 to-zinc-950 text-zinc-100">
-			<div className="mx-auto max-w-6xl px-4 py-6 md:px-8">
-				<header className="mb-6 rounded-2xl border border-violet-500/20 bg-zinc-900/70 p-4 shadow-[0_0_60px_-22px_rgba(139,92,246,0.65)] backdrop-blur">
+			<StaggerEntrance className="mx-auto max-w-6xl px-4 py-6 md:px-8">
+				<header
+					data-enter
+					className="mb-6 rounded-2xl border border-violet-500/20 bg-zinc-900/70 p-4 shadow-[0_0_60px_-22px_rgba(139,92,246,0.65)] backdrop-blur"
+				>
 					<div className="flex flex-wrap items-center justify-between gap-4">
 						<div className="min-w-0 space-y-2">
 							<Link
@@ -180,7 +184,10 @@ export default function DemoPage() {
 					</div>
 				</header>
 
-				<div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-zinc-800 bg-zinc-900/60 p-3">
+				<div
+					data-enter
+					className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-zinc-800 bg-zinc-900/60 p-3"
+				>
 					<div className="flex gap-2">
 						<button
 							type="button"
@@ -211,7 +218,10 @@ export default function DemoPage() {
 				</div>
 
 				{mode === "pack" && (
-					<section className="rounded-2xl border border-violet-500/20 bg-zinc-900/60 p-3 shadow-[inset_0_0_40px_-25px_rgba(139,92,246,0.8)]">
+					<section
+						data-enter
+						className="rounded-2xl border border-violet-500/20 bg-zinc-900/60 p-3 shadow-[inset_0_0_40px_-25px_rgba(139,92,246,0.8)]"
+					>
 						<div className="relative h-[65vh] overflow-hidden rounded-xl border border-zinc-800 bg-linear-to-b from-zinc-900 via-zinc-950 to-black">
 							<PackOpeningScene
 								key={packKey}
@@ -230,7 +240,7 @@ export default function DemoPage() {
 				)}
 
 				{mode === "card" && (
-					<section className="rounded-2xl border border-cyan-500/20 bg-zinc-900/60 p-3">
+					<section data-enter className="rounded-2xl border border-cyan-500/20 bg-zinc-900/60 p-3">
 						<div className="relative h-[65vh] overflow-hidden rounded-xl border border-zinc-800 bg-linear-to-b from-zinc-900 via-zinc-950 to-black">
 							<CardScene card={selectedCard} className="h-full w-full" />
 						</div>
@@ -238,7 +248,7 @@ export default function DemoPage() {
 				)}
 
 				{mode === "card" && (
-					<div className="mt-4 rounded-xl border border-zinc-800 bg-zinc-900/60 p-4">
+					<div data-enter className="mt-4 rounded-xl border border-zinc-800 bg-zinc-900/60 p-4">
 						<h2 className="mb-3 text-sm font-medium text-zinc-300">{tDemo("selectCard")}</h2>
 						<div className="flex flex-wrap gap-2">
 							{DEMO_CARDS.map((card) => (
@@ -261,7 +271,7 @@ export default function DemoPage() {
 					</div>
 				)}
 
-				<div className="mt-4 grid gap-3 md:grid-cols-3">
+				<div data-enter className="mt-4 grid gap-3 md:grid-cols-3">
 					<div className="rounded-xl border border-zinc-800 bg-zinc-900/70 p-4">
 						<p className="text-xs uppercase tracking-widest text-zinc-500">
 							{tDemo("packStatusTitle")}
@@ -331,10 +341,13 @@ export default function DemoPage() {
 					</div>
 				</div>
 
-				<footer className="mt-5 border-t border-zinc-800 pt-4 text-center text-xs text-zinc-500">
+				<footer
+					data-enter
+					className="mt-5 border-t border-zinc-800 pt-4 text-center text-xs text-zinc-500"
+				>
 					{tDemo("footerBlurb")}
 				</footer>
-			</div>
+			</StaggerEntrance>
 		</main>
 	)
 }
